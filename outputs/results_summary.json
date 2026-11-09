@@ -1,0 +1,67 @@
+{
+  "dataset": "UCI Predict Students' Dropout and Academic Success (ID 697)",
+  "dataset_doi": "10.24432/C5MC89",
+  "records_after_cleaning": 4424,
+  "predictor_count": 36,
+  "train_records": 3539,
+  "test_records": 885,
+  "class_distribution": {
+    "Graduate": 2209,
+    "Dropout": 1421,
+    "Enrolled": 794
+  },
+  "target_classes": [
+    "Dropout",
+    "Enrolled",
+    "Graduate"
+  ],
+  "selected_model": "Random Forest",
+  "selection_metric": "macro F1-score",
+  "model_comparison": [
+    {
+      "model": "Decision Tree",
+      "accuracy": 0.6598870056497175,
+      "precision_macro": 0.6070337591980404,
+      "recall_macro": 0.6089807721367334,
+      "f1_macro": 0.6068986926522244,
+      "f1_weighted": 0.6646993130597987
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.7559322033898305,
+      "precision_macro": 0.712798266357434,
+      "recall_macro": 0.7083203232982038,
+      "f1_macro": 0.7077865499156877,
+      "f1_weighted": 0.7590514342082223
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.7288135593220338,
+      "precision_macro": 0.704922494460817,
+      "recall_macro": 0.7047335952308518,
+      "f1_macro": 0.6927419987702371,
+      "f1_weighted": 0.7434134254018487
+    }
+  ],
+  "selected_model_class_metrics": {
+    "Dropout": {
+      "precision": 0.83,
+      "recall": 0.71,
+      "f1_score": 0.76,
+      "support": 284
+    },
+    "Enrolled": {
+      "precision": 0.48,
+      "recall": 0.56,
+      "f1_score": 0.52,
+      "support": 159
+    },
+    "Graduate": {
+      "precision": 0.83,
+      "recall": 0.86,
+      "f1_score": 0.84,
+      "support": 442
+    }
+  },
+  "note": "Dataset is from another higher-education institution, not UEAB. The metrics above are from the reported stratified 80:20 hold-out experiment."
+}
