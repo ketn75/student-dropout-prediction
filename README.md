@@ -44,14 +44,16 @@ python train_model.py
 The script retrieves dataset 697 using the `ucimlrepo` package, prepares the data, performs a stratified 80:20 train-test split, trains the three classifiers, evaluates them, and selects the best model by macro F1-score.
 
 ## Outputs
-After running the script, the `outputs/` folder is populated with:
+The `outputs/` folder contains the reported metrics from the coursework experiment:
 - `model_comparison.csv` — metrics for the compared classifiers
 - `classification_report.txt` — per-class precision, recall, F1-score and support
-- `confusion_matrix.png` — confusion-matrix visualisation
 - `results_summary.json` — dataset and evaluation summary
+
+Running the script regenerates these evaluation files and also creates:
+- `confusion_matrix.png` — confusion-matrix visualisation
 - `best_student_dropout_model.joblib` — saved best model
 
-The generated model and result files are not committed here; run the script to recreate them. Do not upload private student records or confidential institutional information.
+The trained model binary and any local virtual environment are not committed. Do not upload private student records or confidential institutional information.
 
 ## Reported experiment results
 The run used for the accompanying coursework report produced the following test metrics:
@@ -67,7 +69,8 @@ Random Forest was selected. Its per-class F1-scores were 76% for Dropout, 52% fo
 ## Project files
 - `train_model.py` — model training and evaluation
 - `requirements.txt` — Python dependencies
-- `REPORT_RESULTS_TEMPLATE.md` — report-writing guide
+- `REPORT_RESULTS_TEMPLATE.md` — coursework results, discussion and conclusion
+- `outputs/` — measured model comparison and classification report
 - `README.md` — setup, dataset, methods and limitations
 
 ## Academic and ethical note
