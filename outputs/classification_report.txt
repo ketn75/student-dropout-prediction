@@ -1,0 +1,13 @@
+Selected model: Random Forest
+
+              precision    recall  f1-score   support
+
+     Dropout       0.83      0.71      0.76       284
+    Enrolled       0.48      0.56      0.52       159
+    Graduate       0.83      0.86      0.84       442
+
+    accuracy                           0.76       885
+   macro avg       0.71      0.71      0.71       885
+weighted avg       0.77      0.76      0.76       885
+
+Note: Results are from the public UCI dataset (ID 697), not UEAB student data.
