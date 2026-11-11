@@ -9,12 +9,8 @@
 <body>
 <header class="topbar">
   <div class="brand-mark">SO</div>
-  <div>
-    <p class="eyebrow">MACHINE LEARNING DEMONSTRATION</p>
-    <h1>Student Outcome Early-Warning Dashboard</h1>
-  </div>
+  <div><p class="eyebrow">MACHINE LEARNING DEMONSTRATION</p><h1>Student Outcome Early-Warning Dashboard</h1></div>
 </header>
-
 <main class="page">
   <section class="intro">
     <div>
@@ -22,65 +18,32 @@
       <h2>Explore student outcomes with machine learning.</h2>
       <p class="muted">Enter the numeric feature values and submit the form to see the selected model's prediction.</p>
     </div>
-    <div class="status {{ 'ready' if model_ready else 'waiting' }}">
-      <span class="status-dot"></span>
-      {{ 'Model ready' if model_ready else 'Model not trained' }}
-    </div>
+    <div class="status {{ 'ready' if model_ready else 'waiting' }}"><span class="status-dot"></span>{{ 'Model ready' if model_ready else 'Model not trained' }}</div>
   </section>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="messages">
-        {% for category, message in messages %}
-          <div class="message {{ category }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+    {% if messages %}<div class="messages">{% for category, message in messages %}<div class="message {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
   {% endwith %}
 
   {% if summary %}
   <section class="metric-grid">
-    <article class="metric-card">
-      <span class="metric-label">Dataset records</span>
-      <strong>{{ "{:,}".format(summary.records_after_cleaning) }}</strong>
-      <small>After exact-duplicate cleaning</small>
-    </article>
-    <article class="metric-card">
-      <span class="metric-label">Predictor features</span>
-      <strong>{{ summary.predictor_count }}</strong>
-      <small>Input variables</small>
-    </article>
-    <article class="metric-card">
-      <span class="metric-label">Selected model</span>
-      <strong class="model-name">{{ summary.selected_model }}</strong>
-      <small>Chosen by 5-fold training CV macro F1</small>
-    </article>
-    <article class="metric-card">
-      <span class="metric-label">Test accuracy</span>
-      <strong>{{ "%.1f"|format(summary.test_metrics.accuracy * 100) }}%</strong>
-      <small>Held-out test set</small>
-    </article>
+    <article class="metric-card"><span class="metric-label">Dataset records</span><strong>{{ "{:,}".format(summary.records_after_cleaning) }}</strong><small>After exact-duplicate cleaning</small></article>
+    <article class="metric-card"><span class="metric-label">Predictor features</span><strong>{{ summary.predictor_count }}</strong><small>Input variables</small></article>
+    <article class="metric-card"><span class="metric-label">Selected model</span><strong class="model-name">{{ summary.selected_model }}</strong><small>Chosen by 5-fold training CV macro F1</small></article>
+    <article class="metric-card"><span class="metric-label">Test accuracy</span><strong>{{ "%.1f"|format(summary.test_metrics.accuracy * 100) }}%</strong><small>Held-out test set</small></article>
   </section>
   {% endif %}
 
   <section class="panel">
     <div class="panel-heading">
-      <div>
-        <p class="eyebrow">PREDICTION FORM</p>
-        <h2>Enter student information</h2>
-      </div>
+      <div><p class="eyebrow">PREDICTION FORM</p><h2>Enter student information</h2></div>
       <p class="helper">The model expects the feature coding used by the UCI dataset.</p>
     </div>
-
     {% if model_ready %}
     <form method="post" action="{{ url_for('index') }}">
       <div class="form-grid">
         {% for feature in feature_names %}
-        <label class="field">
-          <span>{{ feature }}</span>
-          <input type="number" step="any" name="{{ feature }}"
-                 value="{{ form_values.get(feature, '') }}" required>
-        </label>
+        <label class="field"><span>{{ feature }}</span><input type="number" step="any" name="{{ feature }}" value="{{ form_values.get(feature, '') }}" required></label>
         {% endfor %}
       </div>
       <div class="form-actions">
@@ -89,29 +52,17 @@
       </div>
     </form>
     {% else %}
-      <div class="empty-state">
-        <h3>Train the model to activate predictions</h3>
-        <p>Open the VS Code terminal and run:</p>
-        <code>python train_model.py</code>
-        <p>When training finishes, start this dashboard again with <code>python app.py</code>.</p>
-      </div>
+    <div class="empty-state"><h3>Train the model to activate predictions</h3><p>Open the VS Code terminal and run:</p><code>python train_model.py</code><p>When training finishes, start this dashboard again with <code>python app.py</code>.</p></div>
     {% endif %}
   </section>
 
   {% if prediction %}
   <section class="result-panel">
-    <div>
-      <p class="eyebrow">MODEL PREDICTION</p>
-      <h2>Predicted outcome: <span>{{ prediction }}</span></h2>
-      <p class="muted">This is a model estimate from the supplied input values, not a decision about a real student's future.</p>
-    </div>
+    <div><p class="eyebrow">MODEL PREDICTION</p><h2>Predicted outcome: <span>{{ prediction }}</span></h2><p class="muted">This is a model estimate from the supplied input values, not a decision about a real student's future.</p></div>
     {% if probabilities %}
     <div class="probability-list">
       {% for label, percent in probabilities.items() %}
-      <div class="probability-row">
-        <div><span>{{ label }}</span><strong>{{ "%.2f"|format(percent) }}%</strong></div>
-        <div class="progress-track"><div class="progress-fill" style="width: {{ percent }}%"></div></div>
-      </div>
+      <div class="probability-row"><div><span>{{ label }}</span><strong>{{ "%.2f"|format(percent) }}%</strong></div><div class="progress-track"><div class="progress-fill" style="width: {{ percent }}%"></div></div></div>
       {% endfor %}
     </div>
     {% endif %}
@@ -120,44 +71,26 @@
 
   {% if comparison %}
   <section class="panel">
-    <div class="panel-heading">
-      <div><p class="eyebrow">MODEL EVALUATION</p><h2>Algorithm comparison</h2></div>
-      <p class="helper">Models are ranked by mean five-fold cross-validation macro F1.</p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Model</th><th>Test accuracy</th><th>Test macro F1</th><th>CV macro F1</th></tr></thead>
-        <tbody>
-        {% for row in comparison %}
-          <tr>
-            <td>{{ row.model }}</td>
-            <td>{{ "%.2f"|format(row.accuracy * 100) }}%</td>
-            <td>{{ "%.2f"|format(row.f1_macro * 100) }}%</td>
-            <td>{{ "%.2f"|format(row.cv_f1_macro_mean * 100) }}%</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    <div class="panel-heading"><div><p class="eyebrow">MODEL EVALUATION</p><h2>Algorithm comparison</h2></div><p class="helper">Models are ranked by mean five-fold cross-validation macro F1.</p></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Model</th><th>Test accuracy</th><th>Test macro F1</th><th>CV macro F1</th></tr></thead>
+      <tbody>{% for row in comparison %}<tr><td>{{ row.model }}</td><td>{{ "%.2f"|format(row.accuracy * 100) }}%</td><td>{{ "%.2f"|format(row.f1_macro * 100) }}%</td><td>{{ "%.2f"|format(row.cv_f1_macro_mean * 100) }}%</td></tr>{% endfor %}</tbody>
+    </table></div>
   </section>
   {% endif %}
 
   <section class="panel">
-    <div class="panel-heading">
-      <div><p class="eyebrow">EXPLORATORY DATA ANALYSIS</p><h2>Visual analysis</h2></div>
-      <p class="helper">Charts are created by running the training script.</p>
-    </div>
+    <div class="panel-heading"><div><p class="eyebrow">EXPLORATORY DATA ANALYSIS</p><h2>Visual analysis</h2></div><p class="helper">Charts are created by running the training script.</p></div>
     <div class="chart-grid">
-      <figure><img src="{{ url_for('static', filename='../outputs/class_distribution.png') }}" alt="Student outcome class distribution"><figcaption>Class distribution</figcaption></figure>
-      <figure><img src="{{ url_for('static', filename='../outputs/correlation_heatmap.png') }}" alt="Quantitative feature correlation heatmap"><figcaption>Quantitative feature correlations</figcaption></figure>
-      <figure><img src="{{ url_for('static', filename='../outputs/confusion_matrix.png') }}" alt="Confusion matrix"><figcaption>Confusion matrix</figcaption></figure>
-      <figure><img src="{{ url_for('static', filename='../outputs/feature_importance.png') }}" alt="Permutation feature importance"><figcaption>Permutation feature importance</figcaption></figure>
+      <figure><img src="{{ url_for('output_file', filename='class_distribution.png') }}" alt="Student outcome class distribution"><figcaption>Class distribution</figcaption></figure>
+      <figure><img src="{{ url_for('output_file', filename='correlation_heatmap.png') }}" alt="Quantitative feature correlation heatmap"><figcaption>Quantitative feature correlations</figcaption></figure>
+      <figure><img src="{{ url_for('output_file', filename='confusion_matrix.png') }}" alt="Confusion matrix"><figcaption>Confusion matrix</figcaption></figure>
+      <figure><img src="{{ url_for('output_file', filename='feature_importance.png') }}" alt="Permutation feature importance"><figcaption>Permutation feature importance</figcaption></figure>
     </div>
     <p class="helper">Charts may be unavailable until a training run has generated the output files.</p>
   </section>
 
-  <footer>
-    <strong>Research limitation:</strong> The experiment uses the public UCI Student Dropout and Academic Success dataset. It is not UEAB data. Results are not validated for UEAB students. Predictions should support, not replace, academic advising.
+  <footer><strong>Research limitation:</strong> The experiment uses the public UCI Student Dropout and Academic Success dataset. It is not UEAB data. Results are not validated for UEAB students. Predictions should support, not replace, academic advising.
     <p><a href="https://github.com/ketn75/student-dropout-prediction" target="_blank" rel="noreferrer">Project GitHub repository ↗</a></p>
   </footer>
 </main>
