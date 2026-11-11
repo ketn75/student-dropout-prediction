@@ -6,13 +6,7 @@ This project applies supervised machine learning to classify higher-education st
 - Enrolled
 - Graduate
 
-It compares Decision Tree, Random Forest and Logistic Regression. The enhanced workflow includes exploratory data analysis, data-quality profiling, quantitative-feature correlation analysis, stratified train/test split, five-fold cross-validation on training data, test-set evaluation, confusion matrix and permutation feature importance.
-
-## Enhanced project package
-The **complete enhanced VS Code project** is available in the repository as:
-[`Student_Dropout_ML_Project_Enhanced.zip`](Student_Dropout_ML_Project_Enhanced.zip)
-
-Download the ZIP, extract it, and open the extracted `Student_Dropout_ML_Project` folder in VS Code. It includes the Flask dashboard, EDA notebook, enhanced training script, styles, templates, requirements and report guide. The enhanced archive is the current complete project package; the root-level starter files are retained for reference.
+The enhanced workflow includes exploratory data analysis, data-quality profiling, quantitative-feature correlation analysis, a stratified train/test split, five-fold cross-validation on training data, hold-out test evaluation, a confusion matrix and permutation feature importance. A Flask web dashboard provides an interactive prediction demonstration.
 
 ## Dataset
 The experiment uses the **UCI Predict Students' Dropout and Academic Success** dataset:
@@ -25,10 +19,10 @@ The experiment uses the **UCI Predict Students' Dropout and Academic Success** d
 
 **Important limitation:** This dataset comes from a higher-education institution outside Kenya. It is not UEAB data. The project is a proposed early-warning application for the University of Eastern Africa, Baraton; its measured performance must not be represented as validated UEAB performance. Real UEAB use would require institutional approval, an appropriately anonymised local dataset, local validation, privacy controls and human review.
 
-## Run the enhanced project in VS Code
+## Run the project in VS Code
 Python 3.10 or later is recommended. Install the Python and Jupyter extensions in VS Code.
 
-From the extracted project folder, run these commands in PowerShell:
+Clone or download this repository, open the project folder in VS Code, then run these PowerShell commands from the project folder:
 
 ```powershell
 py -3.12 -m venv venv
@@ -45,33 +39,46 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate.ps1
 ```
 
-Open `student_outcome_eda.ipynb` and run cells from top to bottom for step-by-step exploration.
+Open `student_outcome_eda.ipynb` and run its cells from top to bottom for step-by-step exploration. The notebook inspects the data and can display output metrics after training.
 
-To start the browser dashboard after model training:
+## Start the browser dashboard
+Train the model first using `python train_model.py`. Then start Flask:
 
 ```powershell
 python app.py
 ```
 
-Then open http://127.0.0.1:5000. Do not use VS Code Live Server; Flask runs its own server.
+Open **http://127.0.0.1:5000** in your browser. Keep the VS Code terminal open while using the dashboard and stop the local server with Ctrl+C. Do not use VS Code Live Server; Flask runs its own local server.
 
-## Enhanced analysis and outputs
-The enhanced training script generates:
-- Target class distribution table and chart.
-- Missing-value report, feature profile and descriptive statistics.
-- Pearson correlation table and heatmap for quantitative/count/grade fields only. Integer-coded nominal categories are excluded because their numeric codes do not imply meaningful order.
-- Stratified 80:20 train/test split.
-- Five-fold stratified cross-validation on training records.
-- Decision Tree, Random Forest and Logistic Regression comparisons.
-- Hold-out classification report and confusion matrix.
-- Permutation feature importance for the selected model.
-- Test-set actual-versus-predicted labels.
-- A saved model used by the Flask prediction dashboard.
+The dashboard's prefilled example comes from a row in the public dataset test split. It is a demonstration input, not a UEAB student record.
 
-Outputs are saved in `outputs/`. The new pipeline selects a model based on mean cross-validation macro F1 on the training data and uses the test set for final evaluation. Run the enhanced script before quoting new metrics in coursework. Older results in the starter files are historical results from the earlier experiment, not new cross-validation results.
+## Enhanced analysis and generated outputs
+The training script generates:
+- `class_distribution.csv` and `class_distribution.png` — counts and percentages for the three outcomes.
+- `missing_values.csv`, `feature_profile.csv` and `descriptive_statistics.csv` — data quality and variable descriptions.
+- `quantitative_feature_correlations.csv` and `correlation_heatmap.png` — Pearson correlation for quantitative/count/grade fields only. Integer-coded nominal categories are excluded because their numeric codes do not imply meaningful order.
+- `model_comparison.csv` and `cross_validation_summary.csv` — three classifier test metrics and five-fold training cross-validation summaries.
+- `classification_report.txt` and `confusion_matrix.png` — per-class test performance and confusion matrix.
+- `feature_importance.csv` and `feature_importance.png` — permutation feature importance on held-out test data.
+- `test_predictions.csv` — actual and predicted labels for test records.
+- `dataset_exploration.json` and `results_summary.json` — data exploration and experiment metadata.
+- `example_student_input.json` — illustrative form values drawn from a public dataset example row.
+- `best_student_dropout_model.joblib` — selected trained model used by Flask.
+
+The model is selected using mean five-fold cross-validation macro F1 on the training split; the hold-out test split is reserved for final evaluation. Rerun the script before quoting new metrics in coursework. Earlier reported accuracy values belong to the previous experiment and are not results from the enhanced workflow.
+
+## Project files
+- `train_model.py` — data exploration, cross-validation, training and evaluation
+- `student_outcome_eda.ipynb` — step-by-step exploratory data analysis notebook
+- `app.py` — Flask prediction dashboard
+- `templates/index.html` — dashboard page and prediction form
+- `static/style.css` — dashboard styling
+- `requirements.txt` — Python dependencies
+- `REPORT_RESULTS_TEMPLATE.md` — results, discussion and conclusion guide
+- `outputs/` — generated analysis, metrics and saved model
 
 ## Interpretation and responsible use
-Permutation importance measures how much model performance changes when a feature is shuffled. It does not show that the feature causes a student outcome. Correlations describe association, not causation. This is a predictive proof of concept, not a deployed student monitoring system. Predictions should support—not replace—professional academic advising. Local validation, fairness assessment, privacy safeguards and institutional approval are necessary before operational use.
+Permutation importance describes how much model performance changes when a feature is shuffled. It does not show that the feature causes a student outcome. Correlations describe association, not causation. This is a predictive proof of concept, not a deployed student monitoring system. Predictions should support—not replace—professional academic advising. Local validation, fairness assessment, privacy safeguards and institutional approval are necessary before operational use.
 
 ## GitHub repository
 https://github.com/ketn75/student-dropout-prediction
