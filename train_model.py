@@ -273,6 +273,14 @@ def main() -> None:
     pred_frame.to_csv(OUT / "test_predictions.csv", index_label="source_row")
 
     joblib.dump(best_model, OUT / "best_student_dropout_model.joblib")
+    # One real row from the public test split is stored only as an illustrative
+    # dashboard input. It is not an identified student record.
+    example = X_test.iloc[0].to_dict()
+    (OUT / "example_student_input.json").write_text(
+        json.dumps({str(k): float(v) for k, v in example.items()}, indent=2),
+        encoding="utf-8"
+    )
+
     selected = results.iloc[0].to_dict()
     summary = {
         "dataset": "UCI Predict Students' Dropout and Academic Success (ID 697)",
