@@ -6,72 +6,72 @@ This project applies supervised machine learning to classify higher-education st
 - Enrolled
 - Graduate
 
-It compares Decision Tree, Random Forest, and Logistic Regression classifiers. The preferred model is selected using macro F1-score so that performance across all outcome classes is considered.
+It compares Decision Tree, Random Forest and Logistic Regression. The enhanced workflow includes exploratory data analysis, data-quality profiling, quantitative-feature correlation analysis, stratified train/test split, five-fold cross-validation on training data, test-set evaluation, confusion matrix and permutation feature importance.
+
+## Enhanced project package
+The **complete enhanced VS Code project** is available in the repository as:
+[`Student_Dropout_ML_Project_Enhanced.zip`](Student_Dropout_ML_Project_Enhanced.zip)
+
+Download the ZIP, extract it, and open the extracted `Student_Dropout_ML_Project` folder in VS Code. It includes the Flask dashboard, EDA notebook, enhanced training script, styles, templates, requirements and report guide. The enhanced archive is the current complete project package; the root-level starter files are retained for reference.
 
 ## Dataset
 The experiment uses the **UCI Predict Students' Dropout and Academic Success** dataset:
-- 4,424 student records
+- 4,424 records in the source dataset
 - 36 predictor features
 - Three outcome classes
 - UCI dataset ID: 697
 - DOI: https://doi.org/10.24432/C5MC89
 - Dataset page: https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success
 
-**Important limitation:** This dataset comes from a higher-education institution outside Kenya. It is not UEAB data. The project is a proposed early-warning application for the University of Eastern Africa, Baraton; its measured performance must not be represented as validated UEAB performance. A real UEAB deployment would require institutional approval and an appropriately anonymised local dataset.
+**Important limitation:** This dataset comes from a higher-education institution outside Kenya. It is not UEAB data. The project is a proposed early-warning application for the University of Eastern Africa, Baraton; its measured performance must not be represented as validated UEAB performance. Real UEAB use would require institutional approval, an appropriately anonymised local dataset, local validation, privacy controls and human review.
 
-## Requirements
-Python 3.10 or later is recommended.
+## Run the enhanced project in VS Code
+Python 3.10 or later is recommended. Install the Python and Jupyter extensions in VS Code.
 
-### Windows PowerShell setup
+From the extracted project folder, run these commands in PowerShell:
+
 ```powershell
-py -m venv venv
+py -3.12 -m venv venv
 .\venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+python train_model.py
 ```
 
 If PowerShell blocks activation:
+
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate.ps1
 ```
 
-## Run the experiment
+Open `student_outcome_eda.ipynb` and run cells from top to bottom for step-by-step exploration.
+
+To start the browser dashboard after model training:
+
 ```powershell
-python train_model.py
+python app.py
 ```
 
-The script retrieves dataset 697 using the `ucimlrepo` package, prepares the data, performs a stratified 80:20 train-test split, trains the three classifiers, evaluates them, and selects the best model by macro F1-score.
+Then open http://127.0.0.1:5000. Do not use VS Code Live Server; Flask runs its own server.
 
-## Outputs
-The `outputs/` folder contains the reported metrics from the coursework experiment:
-- `model_comparison.csv` — metrics for the compared classifiers
-- `classification_report.txt` — per-class precision, recall, F1-score and support
-- `results_summary.json` — dataset and evaluation summary
+## Enhanced analysis and outputs
+The enhanced training script generates:
+- Target class distribution table and chart.
+- Missing-value report, feature profile and descriptive statistics.
+- Pearson correlation table and heatmap for quantitative/count/grade fields only. Integer-coded nominal categories are excluded because their numeric codes do not imply meaningful order.
+- Stratified 80:20 train/test split.
+- Five-fold stratified cross-validation on training records.
+- Decision Tree, Random Forest and Logistic Regression comparisons.
+- Hold-out classification report and confusion matrix.
+- Permutation feature importance for the selected model.
+- Test-set actual-versus-predicted labels.
+- A saved model used by the Flask prediction dashboard.
 
-Running the script regenerates these evaluation files and also creates:
-- `confusion_matrix.png` — confusion-matrix visualisation
-- `best_student_dropout_model.joblib` — saved best model
+Outputs are saved in `outputs/`. The new pipeline selects a model based on mean cross-validation macro F1 on the training data and uses the test set for final evaluation. Run the enhanced script before quoting new metrics in coursework. Older results in the starter files are historical results from the earlier experiment, not new cross-validation results.
 
-The trained model binary and any local virtual environment are not committed. Do not upload private student records or confidential institutional information.
+## Interpretation and responsible use
+Permutation importance measures how much model performance changes when a feature is shuffled. It does not show that the feature causes a student outcome. Correlations describe association, not causation. This is a predictive proof of concept, not a deployed student monitoring system. Predictions should support—not replace—professional academic advising. Local validation, fairness assessment, privacy safeguards and institutional approval are necessary before operational use.
 
-## Reported experiment results
-The run used for the accompanying coursework report produced the following test metrics:
-
-| Classifier | Accuracy | Macro precision | Macro recall | Macro F1 |
-|---|---:|---:|---:|---:|
-| Decision Tree | 65.99% | 60.70% | 60.90% | 60.69% |
-| Random Forest | 75.59% | 71.28% | 70.83% | 70.78% |
-| Logistic Regression | 72.88% | 70.49% | 70.47% | 69.27% |
-
-Random Forest was selected. Its per-class F1-scores were 76% for Dropout, 52% for Enrolled, and 84% for Graduate. The weaker Enrolled result is an important limitation and should be considered before any practical use.
-
-## Project files
-- `train_model.py` — model training and evaluation
-- `requirements.txt` — Python dependencies
-- `REPORT_RESULTS_TEMPLATE.md` — coursework results, discussion and conclusion
-- `outputs/` — measured model comparison and classification report
-- `README.md` — setup, dataset, methods and limitations
-
-## Academic and ethical note
-This is a predictive proof of concept, not a deployed student monitoring system. Predictions should support—not replace—professional academic advising. Local validation, fairness assessment, privacy safeguards, and institutional approval are necessary before operational use.
+## GitHub repository
+https://github.com/ketn75/student-dropout-prediction
